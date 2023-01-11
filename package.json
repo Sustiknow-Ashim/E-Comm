@@ -1,0 +1,37 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ecomm-backend/server.js",
+    "server": "nodemon ecomm-backend/server.js",
+    "client": "npm start --prefix ecomm-frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\" ",
+    "data:import": "node ecomm-backend/seeder",
+    "data:destroy": "node ecomm-backend/seeder -d"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshimKr/E-Commerce.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AshimKr/E-Commerce/issues"
+  },
+  "homepage": "https://github.com/AshimKr/E-Commerce#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "mongoose": "^6.7.5"
+  },
+  "type": "module",
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20"
+  }
+}
