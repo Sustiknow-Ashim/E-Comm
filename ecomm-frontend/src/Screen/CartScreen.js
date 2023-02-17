@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import { addToCart, removeFromCart } from '../actions/cartActions';
 import Message from '../components/Alert'
 
 const CartScreen = () => {
-
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const [cartItems, setCartItems] = useState([]);
@@ -28,6 +28,7 @@ const CartScreen = () => {
 
   const checkoutHandler = () =>{
     console.log('checkoutHandler')
+    return navigate('/login')
   }
 
   return (
