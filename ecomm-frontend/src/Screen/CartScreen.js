@@ -27,8 +27,8 @@ const CartScreen = () => {
   }
 
   const checkoutHandler = () =>{
-    console.log('checkoutHandler')
-    return navigate('/login')
+    const isLoggedIn = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null;
+    isLoggedIn?.name ? navigate('/shipping') : navigate('/login');
   }
 
   return (
