@@ -9,47 +9,54 @@ import { createOrder } from '../actions/oderActions';
 const PlaceOrderScreen = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     const cart = useSelector(state => state.cart);
 
-    if(!cart.shippingAddress.address){
+    console.log('cart', cart)
+    
+    if (!cart.shippingAddress.address) {
         navigate('/shipping')
-    }else if(!cart.paymentmethod){
+    } else if (!cart.paymentmethod) {
         navigate('/payment')
     }
 
-    // Calculating Price
+    // Calculated Prices
     const addDecimals = (num) => {
         return (Math.round(num * 100) / 100).toFixed(2)
     }
-    cart.itemPrice = addDecimals(cart.cartItems.reduce((acc, item) => acc + (item.price * item.qty), 0))
-    cart.shippingPrice = addDecimals(cart.itemPrice > 100 ? 0 : 60);
-    cart.taxPrice = addDecimals(Number((0.15 * cart.itemPrice).toFixed(2)))
-    cart.totalPrice = Number(cart.itemPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)
 
+    cart.itemsPrice = addDecimals(
+        cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    )
+    cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
+    cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
+    cart.totalPrice = (
+        Number(cart.itemsPrice) +
+        Number(cart.shippingPrice) +
+        Number(cart.taxPrice)
+    ).toFixed(2)
 
-    // console.log(cart)
-
-    const orderCreate = useSelector(state => state.orderCreate);
-    console.log('createOrder',createOrder)  //Geeting error from here I've to start solving from this code
+    const orderCreate = useSelector((state) => state.orderCreate)
     const { order, success, error } = orderCreate;
-
+    
+    // console.log("Order", order)
     useEffect(() => {
-        if(success){
+        if (success) {
             navigate(`/order/${order._id}`)
         }
-        // eslint-disable-next-line
     }, [success, navigate])
 
     const placeOrderHandler = () => {
-        dispatch(createOrder({
-            orderItems: cart.cartItems,
-            shippingAddress: cart.shippingAddress,
-            paymentmethod: cart.paymentmethod,
-            itemPrice: cart.itemPrice,
-            shippingPrice: cart.shippingPrice,
-            taxPrice: cart.taxPrice,
-            totalPrice: cart.totalPrice
-        }))
+        dispatch(
+            createOrder({
+                orderItems: cart.cartItems,
+                shippingAddress: cart.shippingAddress,
+                paymentMethod: cart.paymentMethod ? cart.paymentMethod : 'PayPal',
+                itemsPrice: cart.itemsPrice,
+                shippingPrice: cart.shippingPrice,
+                taxPrice: cart.taxPrice,
+                totalPrice: cart.totalPrice,
+            }))
     }
 
     return (
@@ -113,7 +120,7 @@ const PlaceOrderScreen = () => {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Items</Col>
-                                    <Col>${cart.itemPrice}</Col>
+                                    <Col>${cart.itemsPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
 

@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { productDetailsReducer, productListReducer } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import { userDetailsReducer, userLoginReducer, userRegisterReducer, userUpdateProfileReducer } from "./reducers/userReducers";
-import { orderCreatedReducer } from './reducers/orderReducers'
+import { orderCreatedReducer, orderDetailsReducer, orderPayReducer } from './reducers/orderReducers'
 
 // const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
 
@@ -20,7 +20,9 @@ const reducers = combineReducers({
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     updateUserData: userUpdateProfileReducer,
-    orderReducer: orderCreatedReducer
+    orderCreate: orderCreatedReducer,
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer
 });
 
 const middleware = [thunk];

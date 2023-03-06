@@ -10,12 +10,13 @@ const ShippingScreen = () => {
     const navigate = useNavigate();
     const cart = useSelector(state => state.cart);
     const { shippingAddress } = cart;
+    // console.log(shippingAddress.address)
 
 
-    const [address, setAddress] = useState(shippingAddress.address)
-    const [city, setCity] = useState(shippingAddress.city)
-    const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
-    const [country, setCountry] = useState(shippingAddress.country)
+    const [address, setAddress] = useState(shippingAddress.address ? shippingAddress.address : '')
+    const [city, setCity] = useState(shippingAddress.city ? shippingAddress.city : '')
+    const [postalCode, setPostalCode] = useState(shippingAddress.postalCode ? shippingAddress.postalCode : '')
+    const [country, setCountry] = useState(shippingAddress.country ? shippingAddress.country : '')
 
     const dispatch = useDispatch();
 
@@ -33,7 +34,7 @@ const ShippingScreen = () => {
     return (
         <div>
             <FormContainer>
-                <CheckoutSteps step1 step2/>
+                <CheckoutSteps step1 step2 />
                 <h1>Shipping</h1>
                 <Form onSubmit={submitHandler}>
 

@@ -2,8 +2,9 @@ import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD, CART_SAVE_SH
 
 const initiaState = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
 const initialShippingAddress = localStorage.getItem('shippingAddress') ? JSON.parse(localStorage.getItem('shippingAddress')) : {}
+// const initialPaymentmethod = localStorage.getItem('paymentmethod') ? JSON.parse(localStorage.getItem('paymentmethod')) : {}
 
-export const cartReducer = (state = { cartItems: [...initiaState], shippingAddress: initialShippingAddress }, action) => {
+export const cartReducer = (state = { cartItems: [...initiaState], shippingAddress: initialShippingAddress  }, action) => {
     switch (action.type) {
         case CART_ADD_ITEM:
             const item = action.payload

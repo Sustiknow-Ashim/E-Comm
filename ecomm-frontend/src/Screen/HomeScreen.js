@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Col, Row, Spinner } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import ProductCard from '../components/ProductCard'
 import { listProduct } from '../actions/productActions';
 import { useDispatch, useSelector } from 'react-redux';
