@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { useDispatch, useSelector } from 'react-redux'
+import { getOrderDetails, payOrder } from '../actions/oderActions';
+import { PayPalButton } from 'react-paypal-button-v2'
 import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Message from '../components/Alert';
-import { getOrderDetails } from '../actions/oderActions';
 import LoadingSpinner from '../components/LoadingSpinner';
 import axios from 'axios';
+import { ORDER_PAY_RESET } from '../constants/orderConstants';
 
 const OrderScreen = () => {
     const navigate = useNavigate()
@@ -17,8 +19,7 @@ const OrderScreen = () => {
 
     const orderDetails = useSelector((state) => state.orderDetails)
     const { order, loading, error } = orderDetails;
-
-    const orderPay = useSelector((state) => state.orderPay)
+    const orderPay = useSelector((state) => state.orderPay);
     const { loading: loadingPay, success: successPay } = orderPay;
 
 
@@ -52,24 +53,26 @@ const OrderScreen = () => {
             script.onload = () => {
                 setSdkReady(true)
             }
-            console.log('appendChild')
             document.body.appendChild(script)
         }
         if (!order || successPay) {
+            dispatch({ type: ORDER_PAY_RESET })
             dispatch(getOrderDetails(id))
         } else if (!order.isPaid) {
-            if (!window.payPal) {
+            if (!window.paypal) {
                 console.log('addPayPalScript useEffect')
                 addPayPalScript()
             } else {
                 setSdkReady(true)
             }
         }
-    }, [dispatch, id, successPay])
+    }, [dispatch, id, successPay, order])
 
 
-    const placeOrderHandler = () => {
-        console.log('object')
+
+
+    const successPaymentHandler = (paymentResult) => {
+        dispatch(payOrder(id, paymentResult))
     }
 
     return loading ? <LoadingSpinner /> : error ? <Message varient='danger'>{error}</Message> : <>
@@ -95,7 +98,7 @@ const OrderScreen = () => {
                             )
                         }
                     </ListGroup.Item>
-
+                    {console.log("----order.isPaid----", order.isPaid)}
                     <ListGroup.Item>
                         <h2>Payment Methods: </h2>
                         <strong>Method: </strong>
@@ -172,9 +175,26 @@ const OrderScreen = () => {
                                 <Col>${order.totalPrice}</Col>
                             </Row>
                         </ListGroup.Item>
-                        <ListGroup.Item>
-                            {error && <Message variant='dander'>{error}</Message>}
-                        </ListGroup.Item>
+                        {console.log(order.totalPrice, typeof order.totalPrice)}
+                        {!order.isPaid && (
+                            <ListGroup.Item>
+                                {loadingPay && <LoadingSpinner />}
+                                {!sdkReady ? (
+                                    <LoadingSpinner />
+                                ) : (
+                                    <PayPalButton
+                                        amount="100"
+                                        onSuccess={(details, data) => {
+                                            console.log("details: ", details, "and data is :", data)
+                                            successPaymentHandler(details);
+
+                                        }}
+                                    />
+                                )}
+                            </ListGroup.Item>
+                        )
+
+                        }
 
                     </ListGroup>
                 </Card>

@@ -31,7 +31,7 @@ app.get('/api/config/paypal', (req,res)=>{
 
 app.use(notFound);
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 
 

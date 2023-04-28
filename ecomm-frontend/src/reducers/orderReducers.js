@@ -57,7 +57,7 @@ export const orderDetailsReducer = (state = { loading: true, orderItems: [], shi
 }
 
 
-export const orderPayReducer = ( state = {}, action ) => {
+export const orderPayReducer = (state = {}, action) => {
     switch (action.type) {
         case ORDER_PAY_REQUEST:
             return {
@@ -74,7 +74,7 @@ export const orderPayReducer = ( state = {}, action ) => {
                 error: action.payload
             }
         case ORDER_PAY_RESET:
-            return{ }
+            return {}
         default:
             return state
     }
